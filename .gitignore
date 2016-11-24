@@ -1,2 +1,3 @@
 .pioenvs
 .piolibdeps
+lib/wifi_info/wifi_info.h
