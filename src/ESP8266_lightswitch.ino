@@ -1,9 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-
-const char* HOME_SSID     = "ATT9Iej6KX";
-const char* HOME_PASSWORD = "2=3es5pcw7pf";
+#include "wifi_info.h"
 
 const char* ESP_HOSTNAME = "esp8266";
 
@@ -11,7 +9,7 @@ const int lightPin = 2;
 ESP8266WebServer server(80);
 
 void setup() {
-  const int initalPinState = LOW;
+  const int initalPinState = HIGH;
   pinMode(lightPin, OUTPUT);
   digitalWrite(lightPin, initalPinState);
 
@@ -35,7 +33,7 @@ void configure_wifi() {
   Serial.print("WiFi...");
   WiFi.mode(WIFI_STA); // disconnect from any previous wifi station
   WiFi.begin(HOME_SSID, HOME_PASSWORD);
-  Serial.println(" started");
+  Serial.println(" connected to " + String(HOME_SSID));
 }
 
 void configure_mdns() {
@@ -44,7 +42,7 @@ void configure_mdns() {
     Serial.println(" failed");
   } else {
     MDNS.addService("http", "tcp", 80); // Add service to MDNS-SD
-    Serial.println(" started");
+    Serial.println(" hostname " + String(ESP_HOSTNAME) + ".local");
   }
 }
 
@@ -52,8 +50,7 @@ void configure_server() {
   Serial.print("Server...");
   server.begin();
   server.on("/", espToggleLight);
-  Serial.print(" on ");
-  Serial.println(WiFi.localIP().toString());
+  Serial.println(" on " + WiFi.localIP().toString());
 }
 
 void espToggleLight() {
