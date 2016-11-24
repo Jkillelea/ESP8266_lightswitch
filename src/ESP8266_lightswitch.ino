@@ -5,6 +5,8 @@
 const char* HOME_SSID     = "ATT9Iej6KX";
 const char* HOME_PASSWORD = "2=3es5pcw7pf";
 
+const char* ESP_HOSTNAME = "esp8266";
+
 const int lightPin = 2;
 ESP8266WebServer server(80);
 
@@ -37,7 +39,7 @@ void configure_wifi() {
 
 void configure_mdns() {
   Serial.print("MDNS...");
-  if (!MDNS.begin("esp8266")) { // returns true if begun successfully
+  if (!MDNS.begin(ESP_HOSTNAME)) { // returns true if begun successfully
     Serial.println(" failed");
   } else {
     MDNS.addService("http", "tcp", 80); // Add service to MDNS-SD
