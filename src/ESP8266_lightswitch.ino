@@ -10,10 +10,10 @@ ESP8266WebServer server(80);
 
 void setup() {
   const int initalPinState = HIGH;
+  const int startupDelay   = 3; // seconds
+
   pinMode(lightPin, OUTPUT);
   digitalWrite(lightPin, initalPinState);
-
-  const int startupDelay = 3; // seconds
 
   delay(startupDelay*1000);
   Serial.begin(115200);
@@ -56,10 +56,8 @@ void configure_server() {
 
 void espToggleLight() {
   int state = readLightState() ? LOW : HIGH; // If currently high, then low
-  // String response = String(state);
   digitalWrite(lightPin, state);
   server.send(200, "text/plain", String(state));
-  // Serial.println(response);
 }
 
 void espGetLight() {
