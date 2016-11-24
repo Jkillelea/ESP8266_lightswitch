@@ -50,6 +50,7 @@ void configure_server() {
   Serial.print("Server...");
   server.begin();
   server.on("/", espToggleLight);
+  server.on("/get", espGetLight);
   Serial.println(" on " + WiFi.localIP().toString());
 }
 
@@ -59,6 +60,11 @@ void espToggleLight() {
   digitalWrite(lightPin, state);
   server.send(200, "text/plain", String(state));
   // Serial.println(response);
+}
+
+void espGetLight() {
+  int state = readLightState();
+  server.send(200, "text/plain", String(state));
 }
 
 void espWriteLight(int state) {
