@@ -11,23 +11,24 @@ const int lightPin = 2;
 ESP8266WebServer server(80);
 
 void setup() {
-  const int startupDelay = 3; // seconds
   const int initalPinState = LOW;
+  pinMode(lightPin, OUTPUT);
+  digitalWrite(lightPin, initalPinState);
+
+  const int startupDelay = 3; // seconds
 
   delay(startupDelay*1000);
   Serial.begin(115200);
-  pinMode(lightPin, OUTPUT);
   Serial.println("");
+
   configure_wifi();
   configure_server();
   configure_mdns();
-
-  digitalWrite(lightPin, initalPinState);
 }
 
 void loop() {
   server.handleClient();
-  delay(1);
+  delay(1); // sleep a little (trying to reduce current draw)
 }
 
 void configure_wifi() {
