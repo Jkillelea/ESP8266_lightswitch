@@ -1,9 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include "wifi_info.h"
+#include "credentials.h"
 
-const char* ESP_HOSTNAME = "esp8266";
+// const char* ESP_HOSTNAME = "esp8266";
+#define ESP_HOSTNAME "esp8266"
 
 const int lightPin = 2;
 ESP8266WebServer server(80);
@@ -30,10 +31,19 @@ void loop() {
 }
 
 void configure_wifi() {
-  Serial.print("WiFi...");
   WiFi.mode(WIFI_STA); // disconnect from any previous wifi station
-  WiFi.begin(HOME_SSID, HOME_PASSWORD);
-  Serial.println(" connected to " + String(HOME_SSID));
+
+  Serial.printf("[WiFi] connecting to %s ", WIFI_SSID);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  while(WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(100);
+  }
+  Serial.println();
+
+  Serial.printf("[WiFi] connected to %s\n", WiFi.SSID().c_str());
+  Serial.printf("[WiFi] IP address: %s\n", WiFi.localIP().toString().c_str());
 }
 
 void configure_mdns() {
@@ -42,7 +52,8 @@ void configure_mdns() {
     Serial.println(" failed");
   } else {
     MDNS.addService("http", "tcp", 80); // Add service to MDNS-SD
-    Serial.println(" hostname " + String(ESP_HOSTNAME) + ".local");
+    // Serial.println(" hostname " + String(ESP_HOSTNAME) + ".local");
+    Serial.printf(" hostname %s.local\n", ESP_HOSTNAME);
   }
 }
 
