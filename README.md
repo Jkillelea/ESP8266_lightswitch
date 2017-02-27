@@ -1,4 +1,4 @@
-# ESP8266 Lightswitch
+# ESP8266 Lightswitch [![Build Status](https://travis-ci.org/Jkillelea/ESP8266_lightswitch.svg?branch=master)](https://travis-ci.org/Jkillelea/ESP8266_lightswitch)
 ## Turns my lights on and off via an HTML request
 
 Not much more to add than that. In the future I'd like to set an interrupt pin
